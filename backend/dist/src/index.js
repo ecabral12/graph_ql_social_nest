@@ -37,6 +37,7 @@ const context = ({ req }) => {
 const server = new apollo_server_1.ApolloServer({
     typeDefs: schema_js_1.typeDefs,
     resolvers: resolver_js_1.resolvers,
+    context
 });
 server.listen({ port: 4000 }).then(({ url }) => {
     console.log(`🚀  Server ready at: ${url}`);

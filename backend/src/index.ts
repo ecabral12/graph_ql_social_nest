@@ -29,17 +29,10 @@ const context = ({ req }: { req: any }) => {
   return { user, prisma };
 };
 
-// const server = new ApolloServer({
-//   schema: applyMiddleware(makeExecutableSchema({ typeDefs, resolvers })),
-//   context,
-// });
-
-// server.listen().then(({ url }) => {
-//   console.log(`Server ready at ${url}`);
-// });
 const server = new ApolloServer({
     typeDefs,
     resolvers,
+    context
 });
    
 server.listen({ port: 4000 }).then(({ url }) => {
