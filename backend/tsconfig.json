@@ -2,10 +2,10 @@
   "compilerOptions": {
     "strict": true,
     "rootDirs": ["src"],
-    "outDir": "dist",
+    "outDir": "./dist",
     "lib": ["es2020"],
     "target": "es2020",
-    "module": "commonjs",
+    "module": "ES6",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "types": ["node"],
