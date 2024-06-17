@@ -27,13 +27,6 @@ const context = ({ req }) => {
     const user = getUser(token);
     return { user, prisma };
 };
-// const server = new ApolloServer({
-//   schema: applyMiddleware(makeExecutableSchema({ typeDefs, resolvers })),
-//   context,
-// });
-// server.listen().then(({ url }) => {
-//   console.log(`Server ready at ${url}`);
-// });
 const server = new apollo_server_1.ApolloServer({
     typeDefs: schema_js_1.typeDefs,
     resolvers: resolver_js_1.resolvers,
