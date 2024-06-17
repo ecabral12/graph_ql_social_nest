@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ApolloWrapper } from "../lib/apollo-wrapper";
 import { Toaster } from "react-hot-toast";
+import Transition from "./transition";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,8 +21,10 @@ export default function RootLayout({
     <html lang="en">
       <ApolloWrapper>
         <body className={inter.className}>
-          <Toaster position="bottom-center" />
-          {children}
+          <Transition>
+            <Toaster position="bottom-center" />
+            {children}
+          </Transition>
         </body>
       </ApolloWrapper>
     </html>
