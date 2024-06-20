@@ -19,9 +19,12 @@ import { ApolloError, gql, useMutation } from "@apollo/client";
 import { getClient, query } from "@/lib/client";
 import { toast } from "react-hot-toast";
 const login_mutation = gql(
-  `mutation Mutation($email: String!, $password: String!) {
+  `mutation Login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
       token
+      user {
+        id
+        }
     }
   }`
 );
@@ -60,7 +63,7 @@ export default function LoginForm() {
         throw new Error("No data returned");
       }
       localStorage.setItem("token", data.login.token);
-      console.log(data.login.token);
+      localStorage.setItem("userId", data.login.user.id);
       toast.success("Connecté avec succès");
       setTimeout(() => {
         router.push("/home");

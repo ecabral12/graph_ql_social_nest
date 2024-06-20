@@ -128,10 +128,11 @@ export const resolvers = {
       const userId = ctx.user?.id;
       if (!userId) throw new Error("Not authenticated");
       const article = await prisma.article.findUnique({
-        where: { id: parseInt(args.id, 10) },
+        where: { id: parseInt(args.id) },
       });
+      if (!article) throw new Error("Article not found");
       if (article?.authorId !== userId) throw new Error("Not authorized");
-      return prisma.article.delete({ where: { id: parseInt(args.id, 10) } });
+      return prisma.article.delete({ where: { id: parseInt(args.id) } });
     },
     addComment: async (
       _: {},

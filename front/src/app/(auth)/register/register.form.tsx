@@ -18,7 +18,7 @@ import { ApolloError, gql, useMutation } from "@apollo/client";
 import { getClient, query } from "@/lib/client";
 import { toast } from "react-hot-toast";
 const register_mutation = gql(
-  `mutation Mutation($email: String!, $password: String!, $name: String!) {
+  `mutation Register($email: String!, $password: String!, $name: String!) {
   signup(email: $email, password: $password, name: $name) {
     token
   }

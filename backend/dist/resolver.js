@@ -7,7 +7,6 @@ const prisma = new PrismaClient();
 export const resolvers = {
     Query: {
         me: async (_, __, ctx) => {
-            console.log(ctx.user);
             if (!ctx.user?.id)
                 return null;
             return prisma.user.findUnique({
@@ -35,7 +34,7 @@ export const resolvers = {
             const user = await prisma.user.create({
                 data: { email: args.email, password: hashedPassword, name: args.name },
             });
-            const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
+            const token = jwt.sign({ email: user.email, id: user.id }, process.env.JWT_SECRET);
             return { token, user };
         },
         login: async (_, args, ctx) => {
@@ -49,7 +48,7 @@ export const resolvers = {
             if (!valid) {
                 throw new Error("Invalid password");
             }
-            const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
+            const token = jwt.sign({ email: user.email, id: user.id }, process.env.JWT_SECRET);
             return { token, user };
         },
         createArticle: async (_, args, ctx) => {
