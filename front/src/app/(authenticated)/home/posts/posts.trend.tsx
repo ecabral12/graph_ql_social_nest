@@ -1,9 +1,11 @@
 import { Article } from "@/__generated__/graphql";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Flame } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 function PostsTrends({ mostLiked }: { mostLiked: Article[] }) {
+  const router = useRouter();
   const posts = mostLiked.filter((post) => post.likes.length > 1);
   return (
     <div className="flex flex-col space-y-4 items-center">
@@ -19,14 +21,17 @@ function PostsTrends({ mostLiked }: { mostLiked: Article[] }) {
           >
             <div className="flex items-center space-x-2 justify-between">
               <span>{`${post.likes.length} 🔥`}</span>
-              <h1 className="text-md">{post.title}</h1>
-              <p className="text-xs text-gray-500">by {post.author.name}</p>
+              <h1 className="text-sm">
+                {post.title.length > 10
+                  ? post.title.slice(0, 20) + "..."
+                  : post.title}
+              </h1>
             </div>
             <Button
               variant={"ghost"}
               size={"sm"}
               onClick={() => {
-                window.location.href = `/home/post/${post.id}`;
+                router.push(`/home/posts/${post.id}`);
               }}
             >
               <ArrowRight />

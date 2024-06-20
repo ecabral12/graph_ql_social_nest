@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { setCookie } from "cookies-next";
 import {
   Form,
   FormControl,
@@ -64,6 +65,7 @@ export default function LoginForm() {
       }
       localStorage.setItem("token", data.login.token);
       localStorage.setItem("userId", data.login.user.id);
+      setCookie("token", data.login.token);
       toast.success("Connecté avec succès");
       setTimeout(() => {
         router.push("/home");

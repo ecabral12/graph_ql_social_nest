@@ -59,3 +59,25 @@ export const DeletePost = async (postId: string, token: string) => {
     return null;
   }
 };
+
+export const DeleteComment = async (commentId: string, token: string) => {
+  const client = getClient();
+  const res = await client.mutate({
+    mutation: gql(`
+      mutation Mutation($deleteCommentId: ID!) {
+        deleteComment(id: $deleteCommentId) {
+          id
+        }
+      }
+    `),
+    variables: {
+      deleteCommentId: commentId,
+    },
+    context: {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    },
+  });
+  return res;
+};

@@ -42,6 +42,7 @@ model Comment {
   articleId Int
   author    User     @relation(fields: [authorId], references: [id])
   authorId  Int
+  createdAt DateTime @default(now())
 }
 
 model Like {

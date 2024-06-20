@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { ApolloError, gql, useMutation } from "@apollo/client";
 import { getClient, query } from "@/lib/client";
 import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 const register_mutation = gql(
   `mutation Register($email: String!, $password: String!, $name: String!) {
   signup(email: $email, password: $password, name: $name) {
@@ -45,6 +46,7 @@ const formSchema = z
   });
 
 export default function RegisterForm() {
+  const router = useRouter();
   const [mutateFunction, { data, loading, error }] =
     useMutation(register_mutation);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -59,13 +61,21 @@ export default function RegisterForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      await mutateFunction({
+      const res = await mutateFunction({
         variables: {
           email: values.email,
           name: values.name,
           password: values.password,
         },
       });
+      const data = res.data;
+      if (!data) {
+        throw new Error("No data returned");
+      }
+      toast.success("Inscription réussie");
+      setTimeout(() => {
+        router.push("/login");
+      }, 1000);
     } catch (e: ApolloError | unknown) {
       if (e instanceof ApolloError) {
         toast.error(e.message);

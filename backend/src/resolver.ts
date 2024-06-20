@@ -33,6 +33,7 @@ export const resolvers = {
     ): Promise<Article[]> => {
       return prisma.article.findMany({
         include: { author: true, comments: true, likes: true },
+        orderBy: { createdAt: "desc" },
       });
     },
     article: async (
@@ -149,6 +150,20 @@ export const resolvers = {
         },
       });
     },
+    deleteComment: async (
+      _: {},
+      args: { id: string },
+      ctx: DataSourceContext
+    ): Promise<Comment | null> => {
+      const userId = ctx.user?.id;
+      if (!userId) throw new Error("Not authenticated");
+      const comment = await prisma.comment.findUnique({
+        where: { id: parseInt(args.id, 10) },
+      });
+      if (!comment) throw new Error("Comment not found");
+      if (comment?.authorId !== userId) throw new Error("Not authorized");
+      return prisma.comment.delete({ where: { id: parseInt(args.id, 10) } });
+    },
     likeArticle: async (
       _: {},
       args: MutationLikeArticleArgs,
@@ -156,6 +171,19 @@ export const resolvers = {
     ): Promise<Like> => {
       const userId = ctx.user?.id;
       if (!userId) throw new Error("Not authenticated");
+      const like = await prisma.like.findFirst({
+        where: {
+          articleId: parseInt(args.articleId, 10),
+          userId: userId,
+        },
+      });
+      if (like) {
+        return prisma.like.delete({
+          where: {
+            id: like.id,
+          },
+        });
+      }
       return prisma.like.create({
         data: {
           article: { connect: { id: parseInt(args.articleId, 10) } },

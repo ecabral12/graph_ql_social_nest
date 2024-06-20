@@ -1,6 +1,6 @@
-import gql from "graphql-tag"
+import gql from "graphql-tag";
 
- export const typeDefs = gql`
+export const typeDefs = gql`
   type Query {
     me: User
     articles: [Article!]!
@@ -15,6 +15,7 @@ import gql from "graphql-tag"
     updateArticle(id: ID!, title: String, content: String): Article!
     deleteArticle(id: ID!): Article!
     addComment(articleId: ID!, content: String!): Comment!
+    deleteComment(id: ID!): Comment!
     likeArticle(articleId: ID!): Like!
   }
 
@@ -41,6 +42,7 @@ import gql from "graphql-tag"
     id: ID!
     content: String!
     author: User!
+    createdAt: String!
   }
 
   type Like {

@@ -75,25 +75,11 @@ function Home() {
 
   return (
     <div>
-      {data && <Menu user={data.me} />}
-      <Separator />
       <div className="flex justify-between w-full">
         <div className="p-4 w-1/4 ">
           {articlesData && <PostsTrends mostLiked={articlesData?.articles} />}
         </div>
         <div className="p-4 w-3/4">
-          <motion.h1
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{
-              type: "spring",
-              stiffness: 260,
-              damping: 20,
-            }}
-            className="text-2xl text-center  mb-4"
-          >
-            Latest posts
-          </motion.h1>
           {articlesData && (
             <>
               {/* <DataTable columns={postsColumns} data={articlesData.articles} /> */}
