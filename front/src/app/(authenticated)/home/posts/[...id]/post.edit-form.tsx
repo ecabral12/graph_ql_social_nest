@@ -17,32 +17,34 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { gql, useMutation } from "@apollo/client";
+import { Article } from "@/__generated__/graphql";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   title: z.string().min(3, {
-    message: "Title must be at least 3 characters.",
+    message: "Le titre doit contenir au moins 3 caractères.",
   }),
-  content: z.string().min(10, {
-    message: "Content must be at least 10 characters.",
+  content: z.string().min(5, {
+    message: "Le contenu doit contenir au moins 5 caractères.",
   }),
 });
 
 const mutation = gql(`
-    mutation createPost($title: String!, $content: String!) {
-  createArticle(title: $title, content: $content) {
+ mutation UpdateArticle($updateArticleId: ID!, $title: String, $content: String) {
+  updateArticle(id: $updateArticleId, title: $title, content: $content) {
     id
-    title
   }
 }
 `);
 
-export function PostForm() {
+export function PostEditForm({ post }: { post: Article }) {
+  const router = useRouter();
   const [mutateFunction, { data, loading, error }] = useMutation(mutation);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
-      content: "",
+      title: post.title,
+      content: post.content,
     },
   });
 
@@ -52,6 +54,7 @@ export function PostForm() {
         variables: {
           title: values.title,
           content: values.content,
+          updateArticleId: parseInt(post.id),
         },
         context: {
           headers: {
@@ -59,10 +62,11 @@ export function PostForm() {
           },
         },
       });
+      console.log(res);
       toast.promise(res, {
-        loading: "Création de l'article...",
-        success: "Article créé avec succès.",
-        error: "Erreur lors de la création de l'article.",
+        loading: "Mise à jour...",
+        success: "Article mis à jour",
+        error: "Une erreur est survenue",
       });
       setTimeout(() => {
         window.location.reload();
@@ -103,7 +107,7 @@ export function PostForm() {
           )}
         />
         <Button className="w-full" type="submit">
-          Créer
+          Mettre à jour
         </Button>
       </form>
     </Form>

@@ -2,13 +2,12 @@ import { Article } from "@/__generated__/graphql";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  FireExtinguisher,
-  Flame,
-  Heart,
-  HeartOff,
-  Snowflake,
-  SunSnow,
-} from "lucide-react";
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { FireExtinguisher, Flame, Heart, SunSnow } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 import dayjs from "dayjs";
@@ -36,7 +35,6 @@ function PostList({ posts, userId }: { posts: Article[]; userId: string }) {
         setSelectedFilter("hot");
         break;
       case "like":
-        console.log(userId);
         newfilteredPosts = posts.filter((post) =>
           post.likes.some((like) => like.user.id === userId)
         );
@@ -70,47 +68,83 @@ function PostList({ posts, userId }: { posts: Article[]; userId: string }) {
           className="text-2xl text-left  mb-4"
         >
           {selectedFilter === "fire"
-            ? "🔥 Trending Posts"
+            ? "🔥 Article à la une"
             : selectedFilter === "hot"
-            ? "🔥 Hot Posts"
+            ? "🔥 Article populaire"
             : selectedFilter === "like"
-            ? "❤️ Liked Posts"
+            ? "❤️ Vos articles préférés"
             : selectedFilter === "snow"
-            ? "❄️ Cold Posts"
-            : "All Posts"}
+            ? "❄️ Articles moins aimés"
+            : "Tous les articles"}
         </motion.h1>
         <div className="flex items-center space-x-2 text-center">
           <Button variant={"link"} onClick={() => filterby("")}>
-            All
+            Tous
           </Button>
-          <Button variant={"link"} onClick={() => filterby("fire")}>
-            <FireExtinguisher
-              color={selectedFilter === "fire" ? "red" : "black"}
-              fill={selectedFilter === "fire" ? "red" : "none"}
-            />
-          </Button>
-          <Button variant={"link"} onClick={() => filterby("hot")}>
-            <Flame
-              color={selectedFilter === "hot" ? "red" : "black"}
-              fill={selectedFilter === "hot" ? "red" : "none"}
-            />
-          </Button>
-          <Button variant={"link"} onClick={() => filterby("like")}>
-            <Heart
-              color={selectedFilter === "like" ? "red" : "black"}
-              fill={selectedFilter === "like" ? "red" : "none"}
-            />
-          </Button>
-          <Button variant={"link"} onClick={() => filterby("snow")}>
-            <SunSnow
-              color={selectedFilter === "snow" ? "blue" : "black"}
-              fill={selectedFilter === "snow" ? "blue" : "none"}
-            />
-          </Button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant={"link"} onClick={() => filterby("fire")}>
+                  <FireExtinguisher
+                    color={selectedFilter === "fire" ? "red" : "black"}
+                    fill={selectedFilter === "fire" ? "red" : "none"}
+                  />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Article à la une. 🔥🔥🔥</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant={"link"} onClick={() => filterby("hot")}>
+                  <Flame
+                    color={selectedFilter === "hot" ? "red" : "black"}
+                    fill={selectedFilter === "hot" ? "red" : "none"}
+                  />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Articles populaires. 🔥🔥</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant={"link"} onClick={() => filterby("like")}>
+                  <Heart
+                    color={selectedFilter === "like" ? "red" : "black"}
+                    fill={selectedFilter === "like" ? "red" : "none"}
+                  />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Vos articles préférés. ❤️</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant={"link"} onClick={() => filterby("snow")}>
+                  <SunSnow
+                    color={selectedFilter === "snow" ? "blue" : "black"}
+                    fill={selectedFilter === "snow" ? "blue" : "none"}
+                  />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Articles moins aimés. ❄️❄️</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </div>
       <div className="flex flex-col space-y-4">
-        {filteredPosts.length === 0 && <p>No posts yet.</p>}
+        {filteredPosts.length === 0 && <p>Aucun article trouvé</p>}
         {filteredPosts.map((post) => (
           <div
             key={post.id}
@@ -156,13 +190,15 @@ function PostList({ posts, userId }: { posts: Article[]; userId: string }) {
               </div>
             </div>
             <div className="flex space-x-2">
-              <Badge>{post.likes.length} likes</Badge>
-              <Badge>{post.comments.length} comments</Badge>
+              <Badge>
+                {post.likes.length} like{post.likes.length > 1 && "s"}
+              </Badge>
+              <Badge>{post.comments.length} commentaires</Badge>
               {new Date(post.createdAt).getTime() <
               new Date().getTime() - 86400000 ? (
                 <Badge>{new Date(post.createdAt).toLocaleDateString()}</Badge>
               ) : (
-                <Badge variant="secondary">New</Badge>
+                <Badge variant="secondary">Nouveau</Badge>
               )}
             </div>
           </div>

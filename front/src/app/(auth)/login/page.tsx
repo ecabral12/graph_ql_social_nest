@@ -1,10 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
-import { ApolloError, gql, useMutation } from "@apollo/client";
-import { getClient, query } from "@/lib/client";
-import { toast } from "react-hot-toast";
-import { set } from "react-hook-form";
-import { Button } from "@/components/ui/button";
+import React from "react";
 import {
   Card,
   CardContent,
@@ -13,8 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import LoginForm from "./login.form";
 
 function LoginPage() {

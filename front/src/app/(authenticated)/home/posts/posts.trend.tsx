@@ -11,7 +11,7 @@ function PostsTrends({ mostLiked }: { mostLiked: Article[] }) {
     <div className="flex flex-col space-y-4 items-center">
       <div className="flex items-center space-x-2 text-center">
         <Flame />
-        <h1 className="text-2xl">Trending Posts</h1>
+        <h1 className="text-2xl">Tendances</h1>
       </div>
       <div className="border border-gray-200 p-4 rounded-md mt-4 w-full">
         {posts.map((post) => (

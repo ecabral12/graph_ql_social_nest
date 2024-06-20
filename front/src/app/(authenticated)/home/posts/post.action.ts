@@ -1,6 +1,7 @@
 "use server";
 import { getClient } from "@/lib/client";
-import { ApolloError, gql } from "@apollo/client";
+import { gql } from "@apollo/client";
+import { revalidatePath } from "next/cache";
 
 const like = gql(`
     mutation Mutation($articleId: ID!) {
@@ -53,6 +54,7 @@ export const DeletePost = async (postId: string, token: string) => {
         },
       },
     });
+    revalidatePath("/home");
     return res;
   } catch (error) {
     console.error(error);

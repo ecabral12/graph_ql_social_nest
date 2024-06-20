@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ApolloError, gql, useMutation } from "@apollo/client";
-import { getClient, query } from "@/lib/client";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 const register_mutation = gql(

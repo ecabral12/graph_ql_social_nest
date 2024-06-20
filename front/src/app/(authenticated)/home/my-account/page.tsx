@@ -1,9 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
-import { gql, useQuery, ApolloError, useLazyQuery } from "@apollo/client";
-import { Separator } from "@/components/ui/separator";
-import { motion } from "framer-motion";
-import { get } from "http";
+import { gql, useLazyQuery } from "@apollo/client";
 import PostList from "../posts/posts.list";
 
 const query = gql(`
@@ -57,10 +54,6 @@ function Account() {
       });
     }
   }, []);
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   return (
     <div>

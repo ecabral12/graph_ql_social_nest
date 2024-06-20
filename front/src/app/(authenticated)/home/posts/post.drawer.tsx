@@ -12,26 +12,35 @@ import { Button } from "@/components/ui/button";
 
 import React from "react";
 import { PostForm } from "./post.form";
+import { PostEditForm } from "./[...id]/post.edit-form";
+import { Article } from "@/__generated__/graphql";
 
-function PostDrawer() {
+type props = {
+  type: string;
+  post: Article | null;
+};
+
+function PostDrawer({ type, post }: props) {
   return (
     <Drawer>
       <DrawerTrigger asChild>
         <Button variant="default" className="w-full">
-          Create Post
+          {type === "new" ? "Créer un post" : "Editer un post"}
         </Button>
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle>You are about to create a new post.</DrawerTitle>
+          <DrawerTitle>
+            {type === "new" ? " Créer un post" : "Editer un post"}
+          </DrawerTitle>
           <DrawerDescription>
-            <PostForm />
+            {type === "new" ? <PostForm /> : <PostEditForm post={post!} />}
           </DrawerDescription>
         </DrawerHeader>
         <DrawerFooter>
           <DrawerClose>
             <Button variant="outline" className="w-full">
-              Cancel
+              Annuler
             </Button>
           </DrawerClose>
         </DrawerFooter>

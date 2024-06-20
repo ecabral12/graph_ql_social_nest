@@ -14,13 +14,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { gql, useMutation } from "@apollo/client";
 
 const formSchema = z.object({
-  content: z.string().min(10, {
-    message: "Content must be at least 10 characters.",
+  content: z.string().min(5, {
+    message: "le contenu doit contenir au moins 5 caractères.",
   }),
 });
 
@@ -47,7 +46,6 @@ export function CommentForm({
     },
   });
 
-  // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const res = mutateFunction({
@@ -64,9 +62,9 @@ export function CommentForm({
 
       refetch();
       toast.promise(res, {
-        loading: "Adding comment...",
-        success: "Comment added!",
-        error: "Error adding comment.",
+        loading: "Ajout du commentaire...",
+        success: "Commentaire ajouté avec succès.",
+        error: "Erreur lors de l'ajout du commentaire.",
       });
       form.reset();
     } catch (error) {
@@ -81,7 +79,7 @@ export function CommentForm({
           name="content"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Comment</FormLabel>
+              <FormLabel>Commentaire</FormLabel>
               <FormControl>
                 <Textarea placeholder="I hope this is real..." {...field} />
               </FormControl>
@@ -91,7 +89,7 @@ export function CommentForm({
           )}
         />
         <Button className="w-full" type="submit">
-          Submit
+          Envoyer
         </Button>
       </form>
     </Form>

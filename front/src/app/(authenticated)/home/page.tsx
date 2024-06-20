@@ -1,15 +1,9 @@
 "use client";
 import React, { useEffect } from "react";
-import { gql, useQuery, ApolloError, useLazyQuery } from "@apollo/client";
-import { date } from "zod";
-import { DataTable } from "./posts/posts.datatable";
-import { postsColumns } from "./posts/posts.columns";
-import Menu from "./navigation/menu";
-import { Separator } from "@/components/ui/separator";
-import { motion } from "framer-motion";
-import { get } from "http";
+import { gql, useLazyQuery } from "@apollo/client";
 import PostList from "./posts/posts.list";
 import PostsTrends from "./posts/posts.trend";
+import Loading from "../loading";
 
 const query = gql(`
     query Me {
@@ -46,7 +40,8 @@ const articlesQuery = gql(`
 
 function Home() {
   const [token, setToken] = React.useState<string | null>(null);
-  const [getUser, { data, loading, error }] = useLazyQuery(query);
+  const [showLoading, setShowLoading] = React.useState<boolean>(true);
+  const [getUser, { data, loading, error, refetch }] = useLazyQuery(query);
   const [
     getArticles,
     { data: articlesData, loading: articlesLoading, error: articlesError },
@@ -71,7 +66,15 @@ function Home() {
         },
       });
     }
+    refetch();
   }, []);
+
+  if (showLoading) {
+    setTimeout(() => {
+      setShowLoading(false);
+    }, 1000);
+    return <Loading />;
+  }
 
   return (
     <div>
@@ -82,7 +85,6 @@ function Home() {
         <div className="p-4 w-3/4">
           {articlesData && (
             <>
-              {/* <DataTable columns={postsColumns} data={articlesData.articles} /> */}
               <PostList posts={articlesData.articles} userId={data.me.id} />
             </>
           )}

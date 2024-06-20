@@ -1,10 +1,8 @@
 "use client";
 import React, { useEffect } from "react";
 import PostDrawer from "../posts/post.drawer";
-import { User } from "@/__generated__/graphql";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { gql, useQuery, ApolloError, useLazyQuery } from "@apollo/client";
+import { gql, useLazyQuery } from "@apollo/client";
 import { Home } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { deleteCookie } from "cookies-next";
@@ -53,19 +51,19 @@ function Menu() {
           <h1 className="text-2xl ">Hey, {data.me.name} 👋</h1>
         )}
         <div className="flex items-center space-x-4">
-          <Button onClick={logout}>Logout</Button>
+          <Button onClick={logout}>Déconnexion</Button>
         </div>
       </div>
       <div className="grid grid-cols-5 gap-4">
         <Button className="col-span-1" onClick={() => router.push("/home")}>
           <Home size={24} />
         </Button>
-        <PostDrawer />
+        <PostDrawer type="new" post={null} />
         <Button
           onClick={() => router.push("/home/my-account")}
           className="col-span-1"
         >
-          My posts
+          Mes articles
         </Button>
       </div>
     </div>
