@@ -4,6 +4,16 @@
 
 - Créer un fichier `.env` à la racine du projet `backend` et y ajouter les variables d'environnement comme indiqué dans le fichier `.env.example` du dossier `backend`.
 
+- Initialiser la base de données avec les commandes suivantes :
+
+```bash
+cd backend
+```
+
+```bash
+npx prisma db push
+```
+
 ### Lancer le backend
 
 #### Installation des dépendances
