@@ -103,7 +103,7 @@ export const create_article = gql(`
 `);
 
 export const like_article = gql(`
-    mutation Mutation($articleId: ID!) {
+    mutation LikeArticle($articleId: ID!) {
   likeArticle(articleId: $articleId) {
     id
   }
@@ -118,7 +118,7 @@ export const delete_article = gql(`mutation Mutation($deleteArticleId: ID!) {
 `);
 
 export const delete_comment = gql(`
-     mutation Mutation($deleteCommentId: ID!) {
+     mutation DeleteComment($deleteCommentId: ID!) {
         deleteComment(id: $deleteCommentId) {
           id
         }

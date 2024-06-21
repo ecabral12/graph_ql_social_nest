@@ -15,14 +15,15 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
 const documents = {
     "mutation Login($email: String!, $password: String!) {\n    login(email: $email, password: $password) {\n      token\n      user {\n        id\n        }\n    }\n  }": types.LoginDocument,
     "mutation Register($email: String!, $password: String!, $name: String!) {\n  signup(email: $email, password: $password, name: $name) {\n    token\n  }\n}": types.RegisterDocument,
-    "\n    query MeAccount {\n  me {\n    id\n    email\n    name\n    articles {\n      id\n      title\n      content\n      author {\n        id\n        name\n      }\n      comments {\n        id\n        content\n        author {\n          name\n          id\n        }\n        createdAt\n      }\n      likes {\n        id\n        user {\n          id\n        }\n      }\n      createdAt\n    }\n  }\n}\n  ": types.MeAccountDocument,
-    "\n    query Me {\n  me {\n    name\n    email\n  }\n}\n": types.MeDocument,
-    "\n    query MeHome {\n  me {\n    name\n    email\n  }\n}\n": types.MeHomeDocument,
-    "\n    query Articles {\n  articles {\n    id\n    title\n    content\n    createdAt\n    likes{\n      id\n      user{\n        id\n        }\n      }\n        comments{\n        id\n        }\n    author {\n      id\n      name\n    }\n  }\n}\n": types.ArticlesDocument,
-    "\n    mutation AddComment($articleId: ID!, $content: String!) {\n  addComment(articleId: $articleId, content: $content) {\n    id\n  }\n}\n": types.AddCommentDocument,
-    "\n  query post($articleId: ID!) {\n  article(id: $articleId) {\n    id\n    title\n    content\n    author {\n      id\n      name\n    }\n      likes{\n        id\n        user{id}\n        }\n        comments{id\n        content\n        author{\n          id\n          name\n          }\n        }\n    createdAt\n  }\n}\n": types.PostDocument,
+    "\n  query Me {\n    me {\n      id\n      email\n      name\n      articles {\n        id\n        title\n        content\n        author {\n          id\n          name\n        }\n        comments {\n          id\n          content\n          author {\n            name\n            id\n          }\n          createdAt\n        }\n        likes {\n          id\n          user {\n            id\n          }\n        }\n        createdAt\n      }\n    }\n  }\n": types.MeDocument,
+    "\n  query Articles {\n    articles {\n      id\n      title\n      content\n      createdAt\n      likes {\n        id\n        user {\n          id\n        }\n      }\n      comments {\n        id\n      }\n      author {\n        id\n        name\n      }\n    }\n  }\n": types.ArticlesDocument,
+    "\n    query post($articleId: ID!) {\n    article(id: $articleId) {\n      id\n      title\n      content\n      author {\n        id\n        name\n      }\n        likes{\n          id\n          user{id}\n          }\n          comments{id\n          content\n          author{\n            id\n            name\n            }\n          }\n      createdAt\n    }\n  }\n  ": types.PostDocument,
     "\n mutation UpdateArticle($updateArticleId: ID!, $title: String, $content: String) {\n  updateArticle(id: $updateArticleId, title: $title, content: $content) {\n    id\n  }\n}\n": types.UpdateArticleDocument,
     "\n    mutation createPost($title: String!, $content: String!) {\n  createArticle(title: $title, content: $content) {\n    id\n    title\n  }\n}\n": types.CreatePostDocument,
+    "\n    mutation LikeArticle($articleId: ID!) {\n  likeArticle(articleId: $articleId) {\n    id\n  }\n}\n": types.LikeArticleDocument,
+    "mutation Mutation($deleteArticleId: ID!) {\n  deleteArticle(id: $deleteArticleId) {\n    id\n  }\n}\n": types.MutationDocument,
+    "\n     mutation DeleteComment($deleteCommentId: ID!) {\n        deleteComment(id: $deleteCommentId) {\n          id\n        }\n      }\n": types.DeleteCommentDocument,
+    "\n    mutation AddComment($articleId: ID!, $content: String!) {\n  addComment(articleId: $articleId, content: $content) {\n    id\n  }\n}\n": types.AddCommentDocument,
 };
 
 /**
@@ -50,27 +51,15 @@ export function graphql(source: "mutation Register($email: String!, $password: S
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    query MeAccount {\n  me {\n    id\n    email\n    name\n    articles {\n      id\n      title\n      content\n      author {\n        id\n        name\n      }\n      comments {\n        id\n        content\n        author {\n          name\n          id\n        }\n        createdAt\n      }\n      likes {\n        id\n        user {\n          id\n        }\n      }\n      createdAt\n    }\n  }\n}\n  "): (typeof documents)["\n    query MeAccount {\n  me {\n    id\n    email\n    name\n    articles {\n      id\n      title\n      content\n      author {\n        id\n        name\n      }\n      comments {\n        id\n        content\n        author {\n          name\n          id\n        }\n        createdAt\n      }\n      likes {\n        id\n        user {\n          id\n        }\n      }\n      createdAt\n    }\n  }\n}\n  "];
+export function graphql(source: "\n  query Me {\n    me {\n      id\n      email\n      name\n      articles {\n        id\n        title\n        content\n        author {\n          id\n          name\n        }\n        comments {\n          id\n          content\n          author {\n            name\n            id\n          }\n          createdAt\n        }\n        likes {\n          id\n          user {\n            id\n          }\n        }\n        createdAt\n      }\n    }\n  }\n"): (typeof documents)["\n  query Me {\n    me {\n      id\n      email\n      name\n      articles {\n        id\n        title\n        content\n        author {\n          id\n          name\n        }\n        comments {\n          id\n          content\n          author {\n            name\n            id\n          }\n          createdAt\n        }\n        likes {\n          id\n          user {\n            id\n          }\n        }\n        createdAt\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    query Me {\n  me {\n    name\n    email\n  }\n}\n"): (typeof documents)["\n    query Me {\n  me {\n    name\n    email\n  }\n}\n"];
+export function graphql(source: "\n  query Articles {\n    articles {\n      id\n      title\n      content\n      createdAt\n      likes {\n        id\n        user {\n          id\n        }\n      }\n      comments {\n        id\n      }\n      author {\n        id\n        name\n      }\n    }\n  }\n"): (typeof documents)["\n  query Articles {\n    articles {\n      id\n      title\n      content\n      createdAt\n      likes {\n        id\n        user {\n          id\n        }\n      }\n      comments {\n        id\n      }\n      author {\n        id\n        name\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    query MeHome {\n  me {\n    name\n    email\n  }\n}\n"): (typeof documents)["\n    query MeHome {\n  me {\n    name\n    email\n  }\n}\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n    query Articles {\n  articles {\n    id\n    title\n    content\n    createdAt\n    likes{\n      id\n      user{\n        id\n        }\n      }\n        comments{\n        id\n        }\n    author {\n      id\n      name\n    }\n  }\n}\n"): (typeof documents)["\n    query Articles {\n  articles {\n    id\n    title\n    content\n    createdAt\n    likes{\n      id\n      user{\n        id\n        }\n      }\n        comments{\n        id\n        }\n    author {\n      id\n      name\n    }\n  }\n}\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n    mutation AddComment($articleId: ID!, $content: String!) {\n  addComment(articleId: $articleId, content: $content) {\n    id\n  }\n}\n"): (typeof documents)["\n    mutation AddComment($articleId: ID!, $content: String!) {\n  addComment(articleId: $articleId, content: $content) {\n    id\n  }\n}\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n  query post($articleId: ID!) {\n  article(id: $articleId) {\n    id\n    title\n    content\n    author {\n      id\n      name\n    }\n      likes{\n        id\n        user{id}\n        }\n        comments{id\n        content\n        author{\n          id\n          name\n          }\n        }\n    createdAt\n  }\n}\n"): (typeof documents)["\n  query post($articleId: ID!) {\n  article(id: $articleId) {\n    id\n    title\n    content\n    author {\n      id\n      name\n    }\n      likes{\n        id\n        user{id}\n        }\n        comments{id\n        content\n        author{\n          id\n          name\n          }\n        }\n    createdAt\n  }\n}\n"];
+export function graphql(source: "\n    query post($articleId: ID!) {\n    article(id: $articleId) {\n      id\n      title\n      content\n      author {\n        id\n        name\n      }\n        likes{\n          id\n          user{id}\n          }\n          comments{id\n          content\n          author{\n            id\n            name\n            }\n          }\n      createdAt\n    }\n  }\n  "): (typeof documents)["\n    query post($articleId: ID!) {\n    article(id: $articleId) {\n      id\n      title\n      content\n      author {\n        id\n        name\n      }\n        likes{\n          id\n          user{id}\n          }\n          comments{id\n          content\n          author{\n            id\n            name\n            }\n          }\n      createdAt\n    }\n  }\n  "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -79,6 +68,22 @@ export function graphql(source: "\n mutation UpdateArticle($updateArticleId: ID!
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    mutation createPost($title: String!, $content: String!) {\n  createArticle(title: $title, content: $content) {\n    id\n    title\n  }\n}\n"): (typeof documents)["\n    mutation createPost($title: String!, $content: String!) {\n  createArticle(title: $title, content: $content) {\n    id\n    title\n  }\n}\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation LikeArticle($articleId: ID!) {\n  likeArticle(articleId: $articleId) {\n    id\n  }\n}\n"): (typeof documents)["\n    mutation LikeArticle($articleId: ID!) {\n  likeArticle(articleId: $articleId) {\n    id\n  }\n}\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "mutation Mutation($deleteArticleId: ID!) {\n  deleteArticle(id: $deleteArticleId) {\n    id\n  }\n}\n"): (typeof documents)["mutation Mutation($deleteArticleId: ID!) {\n  deleteArticle(id: $deleteArticleId) {\n    id\n  }\n}\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n     mutation DeleteComment($deleteCommentId: ID!) {\n        deleteComment(id: $deleteCommentId) {\n          id\n        }\n      }\n"): (typeof documents)["\n     mutation DeleteComment($deleteCommentId: ID!) {\n        deleteComment(id: $deleteCommentId) {\n          id\n        }\n      }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation AddComment($articleId: ID!, $content: String!) {\n  addComment(articleId: $articleId, content: $content) {\n    id\n  }\n}\n"): (typeof documents)["\n    mutation AddComment($articleId: ID!, $content: String!) {\n  addComment(articleId: $articleId, content: $content) {\n    id\n  }\n}\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
