@@ -1,5 +1,9 @@
 ## Projet graphql avec Next.js / Apollo Server
 
+### Prérequis
+
+- Créer un fichier `.env` à la racine du projet `backend` et y ajouter les variables d'environnement comme indiqué dans le fichier `.env.example` du dossier `backend`.
+
 ### Lancer le backend
 
 #### Installation des dépendances
