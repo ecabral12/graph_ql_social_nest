@@ -6,6 +6,7 @@ import PostsTrends from "./posts/posts.trend";
 import Loading from "../loading";
 import { get_articles, get_me } from "@/lib/graphql-const";
 import { Article } from "@/gql/graphql";
+import toast from "react-hot-toast";
 
 export type ArticleData = {
   articles: Article[];
@@ -20,24 +21,32 @@ function Home() {
     { data: articlesData, loading: articlesLoading, error: articlesError },
   ] = useLazyQuery<ArticleData>(get_articles);
 
+  if (error) {
+    toast.error(`Erreur serveur: ${error.message}`);
+  }
+
   useEffect(() => {
     const tokenFromStorage = localStorage.getItem("token");
     if (tokenFromStorage) {
       setToken(tokenFromStorage);
-      getUser({
-        context: {
-          headers: {
-            authorization: `Bearer ${tokenFromStorage}`,
+      try {
+        getUser({
+          context: {
+            headers: {
+              authorization: `Bearer ${tokenFromStorage}`,
+            },
           },
-        },
-      });
-      getArticles({
-        context: {
-          headers: {
-            authorization: `Bearer ${tokenFromStorage}`,
+        });
+        getArticles({
+          context: {
+            headers: {
+              authorization: `Bearer ${tokenFromStorage}`,
+            },
           },
-        },
-      });
+        });
+      } catch (e) {
+        toast.error("Error fetching data");
+      }
     }
     refetch();
   }, []);

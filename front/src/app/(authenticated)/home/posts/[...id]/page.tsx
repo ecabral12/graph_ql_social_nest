@@ -7,7 +7,6 @@ import React from "react";
 import { DeleteComment, DeletePost, LikePost } from "../post.action";
 import { toast } from "react-hot-toast";
 import { Badge } from "@/components/ui/badge";
-import { Article } from "@/__generated__/graphql";
 import { CommentForm } from "./comment.form";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/fr";
@@ -15,6 +14,7 @@ import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
 import PostDrawer from "../post.drawer";
 import { get_article } from "@/lib/graphql-const";
+import { Article } from "@/gql/graphql";
 
 dayjs.extend(relativeTime);
 dayjs.locale("fr");
@@ -29,6 +29,9 @@ function page({ params }: { params: { id: string } }) {
   const [liked, setLiked] = React.useState<boolean>(false);
   const [getArticle, { data, loading, error, refetch }] =
     useLazyQuery<ArticleData>(get_article);
+  if (error) {
+    toast.error(`Erreur serveur: ${error.message}`);
+  }
 
   React.useEffect(() => {
     const tokenFromStorage = localStorage.getItem("token");
@@ -68,7 +71,9 @@ function page({ params }: { params: { id: string } }) {
     if (res) {
       refetch();
       setLiked(!liked);
-      toast.success(liked ? "Unliked" : "Liked");
+      toast.success(
+        liked ? "Article ajouté aux favoris" : "Article retiré des favoris"
+      );
     }
   };
   const deleteComment = (commentId: string) => async () => {
@@ -166,7 +171,7 @@ function page({ params }: { params: { id: string } }) {
                 {data.article.content}
               </div>
               <div>
-                <h1 className="text-xl mt-4">Comments</h1>
+                <h1 className="text-xl mt-4">Commentaires</h1>
                 {data.article.comments.length === 0 && (
                   <p>Pas de commentaires</p>
                 )}

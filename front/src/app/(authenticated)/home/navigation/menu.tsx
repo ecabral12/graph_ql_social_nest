@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { deleteCookie } from "cookies-next";
 import { get_me } from "@/lib/graphql-const";
 import { UserData } from "../my-account/page";
+import toast from "react-hot-toast";
 
 function Menu() {
   const router = useRouter();
@@ -36,7 +37,32 @@ function Menu() {
     localStorage.removeItem("userId");
     router.push("/login");
   };
-
+  if (error) {
+    return (
+      <div>
+        <div className="w-full p-4 ">
+          <div>
+            <p className="text-red-500 text-center">
+              <strong>Erreur serveur:</strong> {error.message}
+            </p>
+            <p className="text-center">
+              {process.env.NODE_ENV === "development" && (
+                <p>
+                  Veuillez vous assurer que le serveur backend est bien démarré
+                  et qu'il tourne sur le port 4000.
+                </p>
+              )}
+              {process.env.NODE_ENV === "production" && (
+                <p>
+                  Veuillez passer en mode développement pour voir les erreurs
+                </p>
+              )}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="w-full  p-4 ">
       <div className="flex items-center justify-between p-2">

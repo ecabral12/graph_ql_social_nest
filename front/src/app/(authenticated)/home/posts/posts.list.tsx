@@ -157,7 +157,7 @@ function PostList({ posts, userId }: { posts: Article[]; userId: string }) {
           >
             <div className="flex space-x-4 items-center">
               <div className="flex items-center space-x-2">
-                {post.likes.length > 1 && post.likes.length < 10 ? (
+                {post.likes.length > 5 && post.likes.length < 10 ? (
                   <Flame
                     color="red"
                     className="animate-pulse shadow-orange-300 transform scale-110"

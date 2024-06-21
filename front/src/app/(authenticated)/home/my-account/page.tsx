@@ -4,6 +4,7 @@ import { gql, useLazyQuery } from "@apollo/client";
 import PostList from "../posts/posts.list";
 import { get_me } from "@/lib/graphql-const";
 import { User } from "@/gql/graphql";
+import toast from "react-hot-toast";
 
 export type UserData = {
   me: User;
@@ -12,6 +13,9 @@ export type UserData = {
 function Account() {
   const [token, setToken] = React.useState<string | null>(null);
   const [getUser, { data, loading, error }] = useLazyQuery<UserData>(get_me);
+  if (error) {
+    toast.error(`Erreur serveur: ${error.message}`);
+  }
   useEffect(() => {
     const tokenFromStorage = localStorage.getItem("token");
     if (tokenFromStorage) {
