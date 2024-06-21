@@ -6,20 +6,13 @@ import { gql, useLazyQuery } from "@apollo/client";
 import { Home } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { deleteCookie } from "cookies-next";
-
-const query = gql(`
-    query Me {
-  me {
-    name
-    email
-  }
-}
-`);
+import { get_me } from "@/lib/graphql-const";
+import { UserData } from "../my-account/page";
 
 function Menu() {
   const router = useRouter();
   const [token, setToken] = React.useState<string | null>(null);
-  const [getUser, { data, loading, error }] = useLazyQuery(query);
+  const [getUser, { data, loading, error }] = useLazyQuery<UserData>(get_me);
 
   useEffect(() => {
     const tokenFromStorage = localStorage.getItem("token");

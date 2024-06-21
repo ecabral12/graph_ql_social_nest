@@ -16,20 +16,13 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { gql, useMutation } from "@apollo/client";
+import { create_comment } from "@/lib/graphql-const";
 
 const formSchema = z.object({
   content: z.string().min(5, {
     message: "le contenu doit contenir au moins 5 caractères.",
   }),
 });
-
-const mutation = gql(`
-    mutation AddComment($articleId: ID!, $content: String!) {
-  addComment(articleId: $articleId, content: $content) {
-    id
-  }
-}
-`);
 
 export function CommentForm({
   articleId,
@@ -38,7 +31,8 @@ export function CommentForm({
   articleId: string;
   refetch: () => void;
 }) {
-  const [mutateFunction, { data, loading, error }] = useMutation(mutation);
+  const [mutateFunction, { data, loading, error }] =
+    useMutation(create_comment);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

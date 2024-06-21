@@ -5,6 +5,7 @@ import {
   InMemoryCache,
 } from "@apollo/experimental-nextjs-app-support";
 
+//TODO : verifier si le backend est lancé sinon throw error
 export const { getClient, query, PreloadQuery } = registerApolloClient(() => {
   return new ApolloClient({
     cache: new InMemoryCache(),

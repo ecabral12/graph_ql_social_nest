@@ -1,28 +1,18 @@
 "use server";
 import { getClient } from "@/lib/client";
+import {
+  delete_article,
+  delete_comment,
+  like_article,
+} from "@/lib/graphql-const";
 import { gql } from "@apollo/client";
 import { revalidatePath } from "next/cache";
-
-const like = gql(`
-    mutation Mutation($articleId: ID!) {
-  likeArticle(articleId: $articleId) {
-    id
-  }
-}
-`);
-
-const deleteArticle = gql(`mutation Mutation($deleteArticleId: ID!) {
-  deleteArticle(id: $deleteArticleId) {
-    id
-  }
-}
-`);
 
 export const LikePost = async (postId: string, token: string) => {
   const client = getClient();
   try {
     const res = await client.mutate({
-      mutation: like,
+      mutation: like_article,
       variables: {
         articleId: postId,
       },
@@ -44,7 +34,7 @@ export const DeletePost = async (postId: string, token: string) => {
 
   try {
     const res = await client.mutate({
-      mutation: deleteArticle,
+      mutation: delete_article,
       variables: {
         deleteArticleId: postId,
       },
@@ -65,13 +55,7 @@ export const DeletePost = async (postId: string, token: string) => {
 export const DeleteComment = async (commentId: string, token: string) => {
   const client = getClient();
   const res = await client.mutate({
-    mutation: gql(`
-      mutation Mutation($deleteCommentId: ID!) {
-        deleteComment(id: $deleteCommentId) {
-          id
-        }
-      }
-    `),
+    mutation: delete_comment,
     variables: {
       deleteCommentId: commentId,
     },

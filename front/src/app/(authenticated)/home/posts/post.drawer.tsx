@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import { PostForm } from "./post.form";
 import { PostEditForm } from "./[...id]/post.edit-form";
-import { Article } from "@/__generated__/graphql";
+import { Article } from "@/gql/graphql";
 
 type props = {
   type: string;

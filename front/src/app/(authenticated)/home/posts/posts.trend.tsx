@@ -1,5 +1,5 @@
-import { Article } from "@/__generated__/graphql";
 import { Button } from "@/components/ui/button";
+import { Article } from "@/gql/graphql";
 import { ArrowRight, Flame } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";

@@ -4,48 +4,21 @@ import { gql, useLazyQuery } from "@apollo/client";
 import PostList from "./posts/posts.list";
 import PostsTrends from "./posts/posts.trend";
 import Loading from "../loading";
+import { get_articles, get_me } from "@/lib/graphql-const";
+import { Article } from "@/gql/graphql";
 
-const query = gql(`
-    query Me {
-  me {
-    name
-    email
-  }
-}
-`);
-
-const articlesQuery = gql(`
-    query Articles {
-  articles {
-    id
-    title
-    content
-    createdAt
-    likes{
-      id
-      user{
-        id
-        }
-      }
-        comments{
-        id
-        }
-    author {
-      id
-      name
-    }
-  }
-}
-`);
+export type ArticleData = {
+  articles: Article[];
+};
 
 function Home() {
   const [token, setToken] = React.useState<string | null>(null);
   const [showLoading, setShowLoading] = React.useState<boolean>(true);
-  const [getUser, { data, loading, error, refetch }] = useLazyQuery(query);
+  const [getUser, { data, loading, error, refetch }] = useLazyQuery(get_me);
   const [
     getArticles,
     { data: articlesData, loading: articlesLoading, error: articlesError },
-  ] = useLazyQuery(articlesQuery);
+  ] = useLazyQuery<ArticleData>(get_articles);
 
   useEffect(() => {
     const tokenFromStorage = localStorage.getItem("token");

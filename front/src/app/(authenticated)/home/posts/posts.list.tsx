@@ -1,4 +1,3 @@
-import { Article } from "@/__generated__/graphql";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,6 +13,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/fr";
 import { motion } from "framer-motion";
+import { Article } from "@/gql/graphql";
 
 dayjs.extend(relativeTime);
 dayjs.locale("fr");

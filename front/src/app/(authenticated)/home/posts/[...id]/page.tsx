@@ -14,37 +14,13 @@ import "dayjs/locale/fr";
 import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
 import PostDrawer from "../post.drawer";
+import { get_article } from "@/lib/graphql-const";
 
 dayjs.extend(relativeTime);
 dayjs.locale("fr");
 interface ArticleData {
   article: Article;
 }
-const post = gql(`
-  query post($articleId: ID!) {
-  article(id: $articleId) {
-    id
-    title
-    content
-    author {
-      id
-      name
-    }
-      likes{
-        id
-        user{id}
-        }
-        comments{id
-        content
-        author{
-          id
-          name
-          }
-        }
-    createdAt
-  }
-}
-`);
 
 function page({ params }: { params: { id: string } }) {
   const router = useRouter();
@@ -52,7 +28,7 @@ function page({ params }: { params: { id: string } }) {
   const [userId, setUserId] = React.useState<string | null>(null);
   const [liked, setLiked] = React.useState<boolean>(false);
   const [getArticle, { data, loading, error, refetch }] =
-    useLazyQuery<ArticleData>(post);
+    useLazyQuery<ArticleData>(get_article);
 
   React.useEffect(() => {
     const tokenFromStorage = localStorage.getItem("token");

@@ -17,8 +17,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { gql, useMutation } from "@apollo/client";
-import { Article } from "@/__generated__/graphql";
 import { useRouter } from "next/navigation";
+import { edit_article } from "@/lib/graphql-const";
+import { Article } from "@/gql/graphql";
 
 const formSchema = z.object({
   title: z.string().min(3, {
@@ -29,17 +30,9 @@ const formSchema = z.object({
   }),
 });
 
-const mutation = gql(`
- mutation UpdateArticle($updateArticleId: ID!, $title: String, $content: String) {
-  updateArticle(id: $updateArticleId, title: $title, content: $content) {
-    id
-  }
-}
-`);
-
 export function PostEditForm({ post }: { post: Article }) {
   const router = useRouter();
-  const [mutateFunction, { data, loading, error }] = useMutation(mutation);
+  const [mutateFunction, { data, loading, error }] = useMutation(edit_article);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
