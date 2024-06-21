@@ -7,6 +7,7 @@ import Loading from "../loading";
 import { get_articles, get_me } from "@/lib/graphql-const";
 import { Article } from "@/gql/graphql";
 import toast from "react-hot-toast";
+import { deleteCookie } from "cookies-next";
 
 export type ArticleData = {
   articles: Article[];
@@ -51,10 +52,22 @@ function Home() {
     refetch();
   }, []);
 
+  useEffect(() => {
+    if (data && data.me === null) {
+      localStorage.removeItem("token");
+      deleteCookie("token");
+      window.location.reload();
+    }
+  }, [data]);
+
   if (showLoading) {
     setTimeout(() => {
       setShowLoading(false);
     }, 1000);
+    return <Loading />;
+  }
+
+  if (loading || articlesLoading || !data || !articlesData || !data.me) {
     return <Loading />;
   }
 
